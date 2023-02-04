@@ -42,10 +42,10 @@ export class App extends Component {
 
   countPositiveFeedbackPercentage() {
     const { good, neutral, bad } = this.state;
-    let total = good + neutral + bad;
 
+    let total = good + neutral + bad;
     let percentage = Math.round((good * 100) / total);
-    console.log(percentage);
+
     return Number.isNaN(percentage) ? 0 : percentage;
   }
 
