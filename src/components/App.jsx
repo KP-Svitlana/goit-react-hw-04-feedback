@@ -4,8 +4,6 @@ import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { Section } from './Section/Section';
 import { Notification } from './Notification/Notification';
 
-const buttons = ['Good', 'Neutral', 'Bad'];
-
 export class App extends Component {
   state = {
     good: 0,
@@ -13,27 +11,11 @@ export class App extends Component {
     bad: 0,
   };
 
-  onBtnClick(value) {
-    switch (value) {
-      case 'Good':
-        this.setState(prevState => {
-          return { good: prevState.good + 1 };
-        });
-        break;
-      case 'Neutral':
-        this.setState(prevState => {
-          return { neutral: prevState.neutral + 1 };
-        });
-        break;
-      case 'Bad':
-        this.setState(prevState => {
-          return { bad: prevState.bad + 1 };
-        });
-        break;
-      default:
-        console.log('Sorry, something going wrong');
-    }
-  }
+  onBtnClick = value => {
+    this.setState(prevState => {
+      return { [value]: prevState[value] + 1 };
+    });
+  };
 
   countTotalFeedback() {
     const { good, neutral, bad } = this.state;
@@ -56,13 +38,11 @@ export class App extends Component {
       <div>
         <Section title="Please leave feedback">
           <FeedbackOptions
-            options={buttons}
-            onLeaveFeedback={ev => this.onBtnClick(ev)}
+            options={Object.keys(this.state)}
+            onLeaveFeedback={this.onBtnClick}
           />
         </Section>
-        {this.state.good === 0 &&
-        this.state.neutral === 0 &&
-        this.state.bad === 0 ? (
+        {this.countTotalFeedback() === 0 ? (
           <Notification message="There is no feedback" />
         ) : (
           <Section title="Statistics">
